@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SharedModel.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">attsw_exam</a> &gt; <a href="index.source.html" class="el_package">com.attsw.attsw_exam.model</a> &gt; <span class="el_source">SharedModel.java</span></div><h1>SharedModel.java</h1><pre class="source lang-java linenums">package com.attsw.attsw_exam.model;
+
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
+import java.util.Date;
+
+@MappedSuperclass
+public class SharedModel {
+
+    private static final long serialVersionUID = 1L;
+
+    private Date createdDate;
+    private Date lastModifiedDate;
+    private Integer status;
+
+
+    @Column(name = &quot;created_date&quot;, updatable = false)
+    @CreatedDate
+    public Date getCreatedDate() {
+<span class="fc" id="L23">        return createdDate;</span>
+    }
+
+    public void setCreatedDate(Date createdDate) {
+<span class="fc" id="L27">        this.createdDate = createdDate;</span>
+<span class="fc" id="L28">    }</span>
+
+    @Column(name = &quot;last_modified_date&quot;)
+    @LastModifiedDate
+    public Date getLastModifiedDate() {
+<span class="fc" id="L33">        return lastModifiedDate;</span>
+    }
+
+    public void setLastModifiedDate(Date lastModifiedDate) {
+<span class="fc" id="L37">        this.lastModifiedDate = lastModifiedDate;</span>
+<span class="fc" id="L38">    }</span>
+
+    @Column(name = &quot;status&quot;)
+    public Integer getStatus() {
+<span class="fc" id="L42">        return status;</span>
+    }
+
+    public void setStatus(Integer status) {
+<span class="fc" id="L46">        this.status = status;</span>
+<span class="fc" id="L47">    }</span>
+
+<span class="fc" id="L49">    public SharedModel(Integer status) {</span>
+<span class="fc" id="L50">        this.status = status;</span>
+<span class="fc" id="L51">    }</span>
+
+<span class="fc" id="L53">    public SharedModel() {</span>
+<span class="fc" id="L54">    }</span>
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

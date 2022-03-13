@@ -1,0 +1,37 @@
+version: '3.5'
+services:
+  db:
+    image: postgres:10
+    ports:
+    - published: 5432
+      target: 5432
+    environment:
+      POSTGRES_DB: attsw
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+  app:
+    image: com.attsw/attsw_exam
+    ports:
+      - published: 8889
+        target: 8889
+    environment:
+      "spring_jpa_show-sql": "true"
+      "spring_jpa_database-platform": org.hibernate.dialect.PostgreSQLDialect
+      "spring_jpa_generate-ddl": "true"
+      spring_jpa_properties_hibernate_default_schema: attsw
+      spring_jpa_properties_hibernate_jdbc_lob_non_contextual_creation: "true"
+      spring_jpa_properties_hbm2ddl_auto: update     
+      spring_database_driverClassName: "org.postgresql.Driver"    
+      spring_datasource_platform: postgres
+      spring_datasource_url: jdbc:postgresql://db:5432/attsw?currentSchema=attsw
+      spring_datasource_username: postgres
+      spring_datasource_password: postgres
+      spring_datasource_hikari_maximumPoolSize: 2
+      spring_datasource_hikari_connectionTimeout: 60000
+      spring_datasource_hikari_idleTimeout: 600000
+      spring_datasource_hikari_maxLifetime: 1800000
+      spring_hibernate_hbm2ddl: update
+      "spring_jpa_hibernate_ddl-auto": update
+    links:
+      - db
+

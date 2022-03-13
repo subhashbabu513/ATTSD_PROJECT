@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TeacherController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">attsw_exam</a> &gt; <a href="index.source.html" class="el_package">com.attsw.attsw_exam.controller</a> &gt; <span class="el_source">TeacherController.java</span></div><h1>TeacherController.java</h1><pre class="source lang-java linenums">/**
+ * Created by: subha_babu
+ * Created on: 6/16/2021
+ **/
+package com.attsw.attsw_exam.controller;
+
+import com.attsw.attsw_exam.dto.TeacherDto;
+import com.attsw.attsw_exam.enums.Status;
+import com.attsw.attsw_exam.model.Teacher;
+import com.attsw.attsw_exam.service.TeacherService;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+
+@RestController
+@RequestMapping(&quot;teacher&quot;)
+public class TeacherController {
+
+    private final TeacherService teacherService;
+    private ModelMapper modelMapper;
+
+    @Autowired
+<span class="fc" id="L28">    public TeacherController(TeacherService teacherService, ModelMapper modelMapper) {</span>
+<span class="fc" id="L29">        this.teacherService = teacherService;</span>
+<span class="fc" id="L30">        this.modelMapper = modelMapper;</span>
+<span class="fc" id="L31">    }</span>
+
+    /*save teacher*/
+    @PostMapping()
+    public ResponseEntity&lt;Teacher&gt; createTeacher(@RequestBody TeacherDto teacherDto) {
+
+<span class="fc" id="L37">        Teacher teacher = modelMapper.map(teacherDto, Teacher.class);</span>
+<span class="fc" id="L38">        return Optional.ofNullable(teacher)</span>
+<span class="fc" id="L39">                .map(teacherObj -&gt; this.teacherService.findByEmailAndStatus(teacher.getEmail(), Status.ACTIVE.getStatusSeq())</span>
+<span class="pc" id="L40">                        .map(updatingRec -&gt; new ResponseEntity&lt;&gt;(updatingRec, HttpStatus.BAD_REQUEST))</span>
+<span class="fc" id="L41">                        .orElseGet(() -&gt; Optional.ofNullable(this.teacherService.saveTeacher(teacher))</span>
+<span class="fc" id="L42">                                .map(val -&gt; new ResponseEntity&lt;&gt;(val, HttpStatus.ACCEPTED))</span>
+<span class="fc" id="L43">                                .orElse(new ResponseEntity&lt;&gt;(HttpStatus.INTERNAL_SERVER_ERROR))))</span>
+<span class="fc" id="L44">                .orElse(new ResponseEntity&lt;&gt;(HttpStatus.BAD_REQUEST));</span>
+
+    }
+
+    /*update teacher*/
+    @PutMapping()
+    public ResponseEntity&lt;Teacher&gt; updateTeacher(@RequestBody TeacherDto teacherDto) {
+
+<span class="fc" id="L52">        Teacher teacher = modelMapper.map(teacherDto, Teacher.class);</span>
+<span class="fc" id="L53">        return Optional.ofNullable(teacher)</span>
+<span class="fc" id="L54">                .map(rec -&gt; this.teacherService.findByIdAndStatus(teacher.getId(), Status.ACTIVE.getStatusSeq())</span>
+<span class="fc" id="L55">                        .map(updatingRec -&gt; Optional.ofNullable(this.teacherService.updateTeacher(teacher,updatingRec))</span>
+<span class="fc" id="L56">                                .map(val -&gt; new ResponseEntity&lt;&gt;(val, HttpStatus.OK))</span>
+<span class="fc" id="L57">                                .orElse(new ResponseEntity&lt;&gt;(HttpStatus.INTERNAL_SERVER_ERROR)))</span>
+<span class="fc" id="L58">                        .orElse(new ResponseEntity&lt;&gt;(HttpStatus.NOT_FOUND)))</span>
+<span class="fc" id="L59">                .orElse(new ResponseEntity&lt;&gt;(HttpStatus.BAD_REQUEST));</span>
+
+    }
+
+    /*delete teacher*/
+    @DeleteMapping(&quot;/{teacherId}&quot;)
+    public ResponseEntity&lt;Teacher&gt; deleteTeacher(@PathVariable(&quot;teacherId&quot;) Integer teacherId) {
+<span class="fc" id="L66">        return Optional.ofNullable(teacherId)</span>
+<span class="fc" id="L67">                .map(rec -&gt; this.teacherService.findByIdAndStatus(teacherId, Status.ACTIVE.getStatusSeq())</span>
+<span class="fc" id="L68">                        .map(filRec -&gt; Optional.ofNullable(this.teacherService.deleteTeacher(filRec))</span>
+<span class="fc" id="L69">                                .map(deletedRec -&gt; new ResponseEntity&lt;&gt;(deletedRec, HttpStatus.OK))</span>
+<span class="fc" id="L70">                                .orElse(new ResponseEntity&lt;&gt;(HttpStatus.INTERNAL_SERVER_ERROR)))</span>
+<span class="fc" id="L71">                        .orElse(new ResponseEntity&lt;&gt;(HttpStatus.NOT_FOUND)))</span>
+<span class="fc" id="L72">                .orElse(new ResponseEntity&lt;&gt;(HttpStatus.BAD_REQUEST));</span>
+    }
+
+
+    /*find teacher*/
+    @GetMapping(&quot;/{teacherId}&quot;)
+    public ResponseEntity&lt;Teacher&gt; findTeacher(@PathVariable(&quot;teacherId&quot;) Integer teacherId) {
+<span class="fc" id="L79">        return Optional.ofNullable(teacherId).map(rec -&gt; this.teacherService</span>
+<span class="fc" id="L80">                .findByIdAndStatus(teacherId, Status.ACTIVE.getStatusSeq())</span>
+<span class="fc" id="L81">                .map(filRec -&gt; new ResponseEntity&lt;&gt;(filRec, HttpStatus.OK))</span>
+<span class="fc" id="L82">                .orElse(new ResponseEntity&lt;&gt;(HttpStatus.NOT_FOUND)))</span>
+<span class="fc" id="L83">                .orElse(new ResponseEntity&lt;&gt;(HttpStatus.BAD_REQUEST));</span>
+    }
+
+    @GetMapping(&quot;/findAll&quot;)
+    public ResponseEntity&lt;List&lt;Teacher&gt;&gt; findAllTeachers() {
+<span class="fc" id="L88">        List&lt;Teacher&gt; listOfTeachers = this.teacherService.findAll();</span>
+<span class="fc" id="L89">        return new ResponseEntity&lt;&gt;(listOfTeachers, HttpStatus.OK);</span>
+    }
+
+    @GetMapping(&quot;/findAllActive&quot;)
+    public ResponseEntity&lt;List&lt;Teacher&gt;&gt; findAllActiveTeachers() {
+<span class="fc" id="L94">        List&lt;Teacher&gt; allActiveTeachers = this.teacherService.findAllActive();</span>
+<span class="fc bfc" id="L95" title="All 2 branches covered.">        if ( allActiveTeachers.isEmpty() ) {</span>
+<span class="fc" id="L96">            return new ResponseEntity&lt;&gt;(allActiveTeachers, HttpStatus.NOT_FOUND);</span>
+        } else {
+<span class="fc" id="L98">            return new ResponseEntity&lt;&gt;(allActiveTeachers, HttpStatus.OK);</span>
+        }
+    }
+
+    @GetMapping(&quot;/findAllDeactive&quot;)
+    public ResponseEntity&lt;List&lt;Teacher&gt;&gt; findAllDeactiveTeachers() {
+<span class="fc" id="L104">        List&lt;Teacher&gt; findAllDeactiveTeachers = this.teacherService.findAllDeactive();</span>
+<span class="fc" id="L105">        return new ResponseEntity&lt;&gt;(findAllDeactiveTeachers, HttpStatus.OK);</span>
+    }
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StudentController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">attsw_exam</a> &gt; <a href="index.source.html" class="el_package">com.attsw.attsw_exam.controller</a> &gt; <span class="el_source">StudentController.java</span></div><h1>StudentController.java</h1><pre class="source lang-java linenums">/**
+ * Created by: subha_babu
+ * Created on: 6/16/2021
+ **/
+package com.attsw.attsw_exam.controller;
+
+import com.attsw.attsw_exam.dto.StudentDto;
+import com.attsw.attsw_exam.enums.Status;
+import com.attsw.attsw_exam.model.Student;
+import com.attsw.attsw_exam.service.StudentService;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+
+@RestController
+@RequestMapping(&quot;student&quot;)
+public class StudentController {
+
+    private final StudentService studentService;
+    private ModelMapper modelMapper;
+
+    @Autowired
+<span class="fc" id="L28">    public StudentController(StudentService studentService, ModelMapper modelMapper) {</span>
+<span class="fc" id="L29">        this.studentService = studentService;</span>
+<span class="fc" id="L30">        this.modelMapper = modelMapper;</span>
+<span class="fc" id="L31">    }</span>
+
+    @PostMapping()
+    public ResponseEntity&lt;Student&gt; createStudent(@RequestBody StudentDto studentDto) {
+
+<span class="fc" id="L36">        Student student = modelMapper.map(studentDto, Student.class);</span>
+<span class="fc" id="L37">        return Optional.ofNullable(student)</span>
+<span class="fc" id="L38">                .map(rec -&gt; Optional.ofNullable(this.studentService.saveStudent(rec))</span>
+<span class="fc" id="L39">                        .map(recSav -&gt; new ResponseEntity&lt;&gt;(recSav, HttpStatus.ACCEPTED))</span>
+<span class="fc" id="L40">                        .orElse(new ResponseEntity&lt;&gt;(HttpStatus.INTERNAL_SERVER_ERROR)))</span>
+<span class="fc" id="L41">                .orElse(new ResponseEntity&lt;&gt;(HttpStatus.BAD_REQUEST));</span>
+
+    }
+
+    @PutMapping()
+    public ResponseEntity&lt;Student&gt; updateStudent(@RequestBody StudentDto studentDto) {
+
+<span class="fc" id="L48">        Student student = modelMapper.map(studentDto, Student.class);</span>
+<span class="fc" id="L49">        return Optional.ofNullable(student)</span>
+<span class="fc" id="L50">                .map(rec -&gt; Optional.ofNullable(this.studentService.updateStudent(rec))</span>
+<span class="fc" id="L51">                        .map(recSav -&gt; new ResponseEntity&lt;&gt;(recSav, HttpStatus.ACCEPTED))</span>
+<span class="fc" id="L52">                        .orElse(new ResponseEntity&lt;&gt;(HttpStatus.INTERNAL_SERVER_ERROR)))</span>
+<span class="fc" id="L53">                .orElse(new ResponseEntity&lt;&gt;(HttpStatus.BAD_REQUEST));</span>
+    }
+
+    @DeleteMapping(&quot;/{studentId}&quot;)
+    public ResponseEntity&lt;Student&gt; deleteStudent(@PathVariable(&quot;studentId&quot;) Integer studentId) {
+
+<span class="fc" id="L59">        return Optional.ofNullable(studentId)</span>
+<span class="fc" id="L60">                .map(rec -&gt; this.studentService.findByIdAndStatus(studentId, Status.ACTIVE.getStatusSeq())</span>
+<span class="fc" id="L61">                        .map(filRec -&gt; Optional.ofNullable(this.studentService.deleteStudent(filRec))</span>
+<span class="fc" id="L62">                                .map(deletedRec -&gt; new ResponseEntity&lt;&gt;(deletedRec, HttpStatus.OK))</span>
+<span class="fc" id="L63">                                .orElse(new ResponseEntity&lt;&gt;(HttpStatus.INTERNAL_SERVER_ERROR)))</span>
+<span class="fc" id="L64">                        .orElse(new ResponseEntity&lt;&gt;(HttpStatus.NOT_FOUND)))</span>
+<span class="fc" id="L65">                .orElse(new ResponseEntity&lt;&gt;(HttpStatus.BAD_REQUEST));</span>
+    }
+
+    @GetMapping(&quot;/{studentId}&quot;)
+    public ResponseEntity&lt;Student&gt; findStudent(@PathVariable(&quot;studentId&quot;) Integer studentId) {
+<span class="fc" id="L70">        return Optional.ofNullable(studentId).map(rec -&gt; this.studentService</span>
+<span class="fc" id="L71">                .findByIdAndStatus(studentId, Status.ACTIVE.getStatusSeq())</span>
+<span class="fc" id="L72">                .map(filRec -&gt; new ResponseEntity&lt;&gt;(filRec, HttpStatus.OK))</span>
+<span class="fc" id="L73">                .orElse(new ResponseEntity&lt;&gt;(HttpStatus.NOT_FOUND)))</span>
+<span class="fc" id="L74">                .orElse(new ResponseEntity&lt;&gt;(HttpStatus.BAD_REQUEST));</span>
+    }
+
+    @GetMapping(&quot;/findAll&quot;)
+    public ResponseEntity&lt;List&lt;Student&gt;&gt; findAllStudent() {
+<span class="fc" id="L79">        return new ResponseEntity&lt;&gt;(this.studentService.findAll(), HttpStatus.OK);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

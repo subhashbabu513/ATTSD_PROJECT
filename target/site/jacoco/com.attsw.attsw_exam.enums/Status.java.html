@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Status.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">attsw_exam</a> &gt; <a href="index.source.html" class="el_package">com.attsw.attsw_exam.enums</a> &gt; <span class="el_source">Status.java</span></div><h1>Status.java</h1><pre class="source lang-java linenums">package com.attsw.attsw_exam.enums;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.util.Arrays;
+
+<span class="fc" id="L7">@JsonFormat(shape = JsonFormat.Shape.OBJECT)</span>
+public enum Status {
+
+<span class="fc" id="L10">    DELETED(0, &quot;Deleted&quot;),</span>
+<span class="fc" id="L11">    OPEN(1, &quot;Open&quot;),</span>
+<span class="fc" id="L12">    ACTIVE(2, &quot;Active&quot;),</span>
+<span class="fc" id="L13">    INACTIVE(3, &quot;Inacative&quot;),</span>
+<span class="fc" id="L14">    SUBMITTED(4, &quot;Submitted&quot;),</span>
+<span class="fc" id="L15">    NOT_SUBMITTED(5, &quot;Not submitted&quot;);</span>
+
+    private final Integer statusSeq;
+    private final String statusName;
+
+<span class="fc" id="L20">    Status(Integer statusSeq, String statusName) {</span>
+<span class="fc" id="L21">        this.statusSeq = statusSeq;</span>
+<span class="fc" id="L22">        this.statusName = statusName;</span>
+<span class="fc" id="L23">    }</span>
+
+    public Integer getStatusSeq() {
+<span class="fc" id="L26">        return statusSeq;</span>
+    }
+
+    public String getStatusName() {
+<span class="fc" id="L30">        return statusName;</span>
+    }
+
+    public static Status findOne(Integer statusSeq) {
+<span class="fc" id="L34">        return Arrays.stream(Status.values())</span>
+<span class="fc" id="L35">                .filter(x -&gt; x.statusSeq.equals(statusSeq))</span>
+<span class="fc" id="L36">                .findFirst()</span>
+<span class="fc" id="L37">                .orElse(null);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

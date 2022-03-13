@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StudentServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">attsw_exam</a> &gt; <a href="index.source.html" class="el_package">com.attsw.attsw_exam.serviceimpl</a> &gt; <span class="el_source">StudentServiceImpl.java</span></div><h1>StudentServiceImpl.java</h1><pre class="source lang-java linenums">/**
+ * Created by: subha_babu
+ * Created on: 6/16/2021
+ **/
+package com.attsw.attsw_exam.serviceimpl;
+
+import com.attsw.attsw_exam.enums.Status;
+import com.attsw.attsw_exam.model.Student;
+import com.attsw.attsw_exam.repository.StudentRepository;
+import com.attsw.attsw_exam.service.StudentService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.logging.Logger;
+
+@Service
+public class StudentServiceImpl implements StudentService {
+
+<span class="fc" id="L21">    private static final Logger logger = Logger.getLogger(StudentServiceImpl.class.getName());</span>
+    private final StudentRepository studentRepository;
+
+    @Autowired
+<span class="fc" id="L25">    public StudentServiceImpl(StudentRepository studentRepository) {</span>
+<span class="fc" id="L26">        this.studentRepository = studentRepository;</span>
+<span class="fc" id="L27">    }</span>
+
+    @Override
+    public Student saveStudent(Student student) {
+<span class="fc" id="L31">        return saveOrUpdate(student);</span>
+    }
+
+    private Student saveOrUpdate(Student student) {
+
+
+<span class="fc" id="L37">            student.setStatus(Status.ACTIVE.getStatusSeq());</span>
+<span class="fc" id="L38">            logger.info(&quot;Student Update/Saved Successfully!!&quot;);</span>
+<span class="fc" id="L39">            return studentRepository.save(student);</span>
+
+    }
+
+    @Override
+    public Student updateStudent(Student student) {
+<span class="fc" id="L45">        return saveOrUpdate(student);</span>
+    }
+
+    @Override
+    public Student deleteStudent(Student student) {
+
+<span class="fc" id="L51">            student.setStatus(Status.DELETED.getStatusSeq());</span>
+<span class="fc" id="L52">            logger.info(&quot;Student Deleted Successfully!!&quot;);</span>
+<span class="fc" id="L53">            return studentRepository.save(student);</span>
+
+    }
+
+    @Override
+    public List&lt;Student&gt; findAll() {
+<span class="fc" id="L59">        return this.studentRepository.findAllByStatus(Status.ACTIVE.getStatusSeq());</span>
+    }
+
+    @Override
+    public Optional&lt;Student&gt; findByIdAndStatus(Integer id, Integer status) {
+<span class="fc" id="L64">        return this.studentRepository.findByIdAndStatus(id, Status.ACTIVE.getStatusSeq());</span>
+    }
+
+    @Override
+    public List&lt;Student&gt; findAllActiveStudent() {
+<span class="fc" id="L69">        return this.studentRepository.findAllByStatus(Status.ACTIVE.getStatusSeq());</span>
+    }
+
+    @Override
+    public Optional&lt;Student&gt; findAllByAge(Integer age) {
+<span class="fc" id="L74">        return this.studentRepository.findAllByAge(age);</span>
+    }
+
+    @Override
+    public Optional&lt;Student&gt; findAllByContactNo(String mobileNo) {
+<span class="fc" id="L79">        return this.studentRepository.findAllByContactNo(mobileNo);</span>
+    }
+
+    @Override
+    public Optional&lt;Student&gt; findAllByCollageName(String collageName) {
+<span class="fc" id="L84">        return this.studentRepository.findAllByCollageName(collageName);</span>
+    }
+
+    @Override
+    public List&lt;Student&gt; findAllDeactive() {
+<span class="fc" id="L89">        return this.studentRepository.findAllByStatus(Status.DELETED.getStatusSeq());</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

@@ -1,0 +1,14 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+attsw_exam,com.attsw.attsw_exam.dto,TeacherDto,0,45,0,0,0,8,0,13,0,13
+attsw_exam,com.attsw.attsw_exam.dto,SharedModelDto,0,24,0,0,0,10,0,7,0,7
+attsw_exam,com.attsw.attsw_exam.dto,StudentDto,0,38,0,0,0,7,0,11,0,11
+attsw_exam,com.attsw.attsw_exam.enums,Status,0,114,0,0,0,17,0,6,0,6
+attsw_exam,com.attsw.attsw_exam.model,Student,0,38,0,0,0,8,0,11,0,11
+attsw_exam,com.attsw.attsw_exam.model,Teacher,0,45,0,0,0,9,0,13,0,13
+attsw_exam,com.attsw.attsw_exam.model,SharedModel,0,30,0,0,0,14,0,8,0,8
+attsw_exam,com.attsw.attsw_exam,AttswExamApplication,8,7,0,0,3,2,1,2,1,2
+attsw_exam,com.attsw.attsw_exam.serviceimpl,StudentServiceImpl,0,85,0,0,0,19,0,13,0,13
+attsw_exam,com.attsw.attsw_exam.serviceimpl,TeacherServiceImpl,0,90,0,2,0,19,0,12,0,11
+attsw_exam,com.attsw.attsw_exam.utility,DateAuditingProvider,3,3,0,0,1,1,1,1,1,1
+attsw_exam,com.attsw.attsw_exam.controller,TeacherController,6,245,0,2,0,40,1,20,1,19
+attsw_exam,com.attsw.attsw_exam.controller,StudentController,0,178,0,0,0,29,0,15,0,15

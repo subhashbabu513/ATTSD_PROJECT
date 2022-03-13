@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TeacherServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">attsw_exam</a> &gt; <a href="index.source.html" class="el_package">com.attsw.attsw_exam.serviceimpl</a> &gt; <span class="el_source">TeacherServiceImpl.java</span></div><h1>TeacherServiceImpl.java</h1><pre class="source lang-java linenums">/**
+ * Created by: subha_babu
+ * Created on: 6/16/2021
+ **/
+package com.attsw.attsw_exam.serviceimpl;
+
+import com.attsw.attsw_exam.enums.Status;
+import com.attsw.attsw_exam.model.Teacher;
+import com.attsw.attsw_exam.repository.TeacherRepository;
+import com.attsw.attsw_exam.service.TeacherService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.logging.Logger;
+
+@Service
+public class TeacherServiceImpl implements TeacherService {
+
+<span class="fc" id="L21">    private static final Logger logger = Logger.getLogger(TeacherServiceImpl.class.getName());</span>
+    private final TeacherRepository teacherRepository;
+
+    @Autowired
+<span class="fc" id="L25">    public TeacherServiceImpl(TeacherRepository teacherRepository) {</span>
+<span class="fc" id="L26">        this.teacherRepository = teacherRepository;</span>
+<span class="fc" id="L27">    }</span>
+
+    @Override
+    public Teacher saveTeacher(Teacher teacher) {
+
+<span class="fc" id="L32">        teacher.setStatus(Status.ACTIVE.getStatusSeq());</span>
+<span class="fc" id="L33">        logger.info(&quot;Teacher Saved Successfully!!&quot;);</span>
+<span class="fc" id="L34">        return this.teacherRepository.save(teacher);</span>
+
+    }
+
+    @Override
+    public Teacher updateTeacher(Teacher teacher, Teacher dbTeacher) {
+
+<span class="fc" id="L41">        teacher.setStatus(Status.ACTIVE.getStatusSeq());</span>
+<span class="fc" id="L42">        teacher.setCreatedDate(dbTeacher.getCreatedDate());</span>
+<span class="fc" id="L43">        return this.teacherRepository.save(teacher);</span>
+
+    }
+
+    @Override
+    public Teacher deleteTeacher(Teacher teacher) {
+
+<span class="fc" id="L50">        teacher.setStatus(Status.DELETED.getStatusSeq());</span>
+<span class="fc bfc" id="L51" title="All 2 branches covered.">        if (teacher.getStudent() != null) {</span>
+<span class="fc" id="L52">            teacher.getStudent().forEach(rec -&gt; rec.setStatus(Status.DELETED.getStatusSeq()));</span>
+        }
+<span class="fc" id="L54">        return this.teacherRepository.save(teacher);</span>
+
+    }
+
+    @Override
+    public List&lt;Teacher&gt; findAllActive() {
+<span class="fc" id="L60">        return this.teacherRepository.findAllByStatus(Status.ACTIVE.getStatusSeq());</span>
+
+    }
+
+    @Override
+    public List&lt;Teacher&gt; findAllDeactive() {
+<span class="fc" id="L66">        return this.teacherRepository.findAllByStatus(Status.DELETED.getStatusSeq());</span>
+
+    }
+
+    @Override
+    public List&lt;Teacher&gt; findAll() {
+<span class="fc" id="L72">        return this.teacherRepository.findAll();</span>
+
+    }
+
+
+    @Override
+    public Optional&lt;Teacher&gt; findByIdAndStatus(Integer id, Integer status) {
+<span class="fc" id="L79">        return this.teacherRepository.findByIdAndStatus(id, Status.ACTIVE.getStatusSeq());</span>
+    }
+
+    @Override
+    public Optional&lt;Teacher&gt; findByEmailAndStatus(String email, Integer status) {
+<span class="fc" id="L84">        return this.teacherRepository.findByEmailAndStatus(email, Status.ACTIVE.getStatusSeq());</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>
