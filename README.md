@@ -12,7 +12,7 @@
 
 ## Test against postgres
 
-### Start postgres db
+### Start postgres db 
 
 ```
 docker run -d -ePOSTGRES_USER=postgres -ePOSTGRES_PASSWORD=postgres -ePOSTGRES_DB=attsw -p5432:5432 postgres:10
